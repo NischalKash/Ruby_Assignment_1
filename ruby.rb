@@ -48,6 +48,21 @@ def check_anagrams(a,b)
     end
 end
 
+def reverse(a)
+    puts "#{a}"
+    s1 = ""
+    s2 = ""
+    vowels = ['a','e','i','o','u']
+    for i in 0..a.length-1
+        if vowels.include? a[i]
+            s1 += a[i]
+        else
+            s2 += a[i]
+        end
+    end
+    return s2+s1
+end
+
 a = [-4,-1,0,3,90]
 value = sorted a
 puts "#{value}"
@@ -74,3 +89,16 @@ final_list[a[i]] = [a[i]]
     i+=1
 end
 puts "#{final_list}"
+
+string = "Object          Oriented                      Design!!"
+string = string.downcase
+string = string.gsub(/\s+/m, ' ').strip.split(" ")
+nums = []
+puts "#{string}"
+for i in 0..string.length-1
+    a = reverse string[i]
+    nums[i] = a
+end
+nums = nums.reverse()
+puts "#{nums.join(' ')}"
+
