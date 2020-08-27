@@ -49,7 +49,6 @@ def check_anagrams(a,b)
 end
 
 def reverse(a)
-    puts "#{a}"
     s1 = ""
     s2 = ""
     vowels = ['a','e','i','o','u']
@@ -61,6 +60,25 @@ def reverse(a)
         end
     end
     return s2+s1
+end
+
+def find_highest(word)
+    words = word.split(' ')
+    final_list = Hash.new
+
+    for i in 0..words.length-1
+        if final_list.include? words[i]
+            final_list[words[i]]+=1
+        else
+            final_list[words[i]] = 1
+        end
+    end
+    final_list = final_list.sort_by {|_key, value| value}.reverse
+    return final_list[0]
+end
+
+def palindrome(s)
+    return s==s.reverse
 end
 
 a = [-4,-1,0,3,90]
@@ -88,17 +106,32 @@ final_list[a[i]] = [a[i]]
     end
     i+=1
 end
-puts "#{final_list}"
+value = []
+final_list.each do | key, values |
+    value.append(values)
+end
+puts "#{value}"
 
 string = "Object          Oriented                      Design!!"
 string = string.downcase
 string = string.gsub(/\s+/m, ' ').strip.split(" ")
 nums = []
-puts "#{string}"
 for i in 0..string.length-1
     a = reverse string[i]
     nums[i] = a
 end
 nums = nums.reverse()
 puts "#{nums.join(' ')}"
+
+
+string = "Bob hit a ball, the Hit BALL flew far after it was hit."
+string = string.downcase
+string = string.gsub!(/[^0-9A-Za-z ]/, '')
+value = find_highest string
+puts "#{value[0]}"
+
+string = "A man, a plan, a canal: Panama."
+string = string.downcase
+string = string.gsub!(/[^0-9A-Za-z]/, '')
+puts "#{palindrome string}"
 
