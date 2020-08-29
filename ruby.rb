@@ -135,3 +135,61 @@ string = string.downcase
 string = string.gsub!(/[^0-9A-Za-z]/, '')
 puts "#{palindrome string}"
 
+class Beverage
+    def initialize(name,price)
+        if name == ""
+            raise ArgumentError, 'Your name input is Nil'
+        end
+        if price == nil or price<0
+            raise ArgumentError, 'Your price input is Invalid'
+        end
+        @name = name
+        @price = price
+    end
+    def getname()
+        return @name
+    end
+    def getprice()
+        return @price
+    end
+
+    def formatted_price()
+        if @price == 0
+            return "Free"
+        end
+        if @price.round == @price
+            if @price > 1
+                return "#{@price.to_i} Dollars Only"
+            else
+                 return "#{@price.to_i} Dollar Only"
+            end
+        end
+        b = @price.to_s.split('.')
+        puts "#{b}"
+        if b[0].to_i==0
+            if b[1].to_i>1
+                return "#{b[1]} cents only"
+            else
+                return "#{b[1]} cent only"
+            end
+        end
+        if b[0].to_i==1
+            if b[1].to_i>1
+                return "1 dollar and #{b[1]} cents only"
+            else
+                return "1 dollar and #{b[1]} cent only"
+            end
+        end
+        if b[0].to_i>1
+            if b[1].to_i>1
+                return "#{b[0]} dollars and #{b[1]} cents only"
+            else
+                return "#{b[0]} dollars and #{b[1]} cent only"
+            end
+        end
+    end
+end
+
+obj1 = Beverage.new("Nischal",10)
+a = obj1.formatted_price()
+puts "#{a}"
