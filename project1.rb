@@ -6,11 +6,11 @@ def move_zeros(a)
   c = a.count
   a.delete(0)
   zero_count = c - a.count
-  a = a.fill(0, a.size, zero_count)
+  a.fill(0, a.size, zero_count)
 end
 
 def group_anagrams(a)
-  res = Hash.new{ |h,k| h[k] = Array.new}
+  res = Hash.new{ |h,k| h[k] = Array.new }
   # puts res
   a.each do |s|
     sorted_str = s.chars.sort.join
@@ -26,9 +26,8 @@ end
 
 # Part 2
 
+# @param [Object] str
 def reverse_words(str)
-  # ADD YOUR CODE HERE
-  vowel_str = ''
   str = str.strip.gsub(/\s\s+/, ' ')
   words_list = str.split(' ')
   words_list = words_list.reverse
@@ -42,9 +41,9 @@ def reverse_words(str)
       # puts ch
       if ch =~ /[aeiouAEIOU]/
         vowel_str << ch
-        # puts c
+        # puts ch
         word = word.delete(ch)
-        # puts w
+        # puts word
       end
     end
     word += vowel_str
@@ -54,10 +53,8 @@ def reverse_words(str)
 end
 
 def highest_frequency_word(s)
-  # ADD YOUR CODE HERE
   words_list = s.gsub(Regexp.union(['!', '?', ',', '\'', ';', '.']), ' ').split.map(&:downcase)
   # puts words_list
-
   res = Hash.new{}
   words_list.each do |word|
     if res[word]
@@ -67,35 +64,29 @@ def highest_frequency_word(s)
     end
   end
   # puts res
-
-  res.max_by{|k,v| v}[0]
+  res.max_by{ |k,v| v }[0]
 end
 
-
-
+# @param [Object] s
+# @return [TrueClass, FalseClass]
 def palindrome?(s)
-  # ADD YOUR CODE HERE
   if s == ''
     return true
   end
 
   str = s.gsub(/[^0-9a-z ]/i, '')
   str = str.gsub(/\s+/, '').downcase!
-
   # puts str
   i = 0
   j = str.to_s.length - 1
 
   while i < j
     return false if str[i] != str[j]
-
     i += 1
     j -= 1
   end
   true
 end
-
-# Part 3
 
 class Beverage
   def initialize(name, price)
@@ -103,9 +94,58 @@ class Beverage
     raise ArgumentError, 'Argument is nil or <0' unless price != nil && price >= 0
 
     @name = name
-    @price = price
+    @price = '%0.2f' % price
   end
-end
+
+  attr_accessor :name
+  attr_accessor :price
+
+  # @return [String]
+  def formatted_price
+    #puts @price
+     res = ''
+     res_list = Array.new
+     res_list = @price.to_s.split('.')
+     res_list = res_list.map(&:to_i)
+
+     if (res_list[0] == 0 && res_list[1] == 0) || (res_list.count == 1 && res_list[0] == 0)
+       res = "Free"
+     else
+      if res_list.count == 1 ||  (res_list.count == 2 && res_list[1] == 0)
+        if res_list[0] > 1
+          res = res_list[0].to_s + ' dollars only'
+        else
+          res = res_list[0].to_s + ' dollar only'
+        end
+      elsif res_list[0] == 0 and res_list.count == 2
+        if res_list[1] > 1
+          #puts res_list[1]
+          res = res_list[1].to_s + ' cents only'
+        else
+          #puts res_list[1]
+          res = res_list[1].to_s + ' cent only'
+        end
+      else
+        if res_list[0] == 0
+          res = ''
+        elsif res_list[0] > 1
+          res = res_list[0] + ' dollars '
+        else
+          res = res_list[0] + ' dollar '
+        end
+
+        if res_list[1] == 0
+          res = res
+        elsif res_list[1] > 1
+          res = res != '' ? res + 'and ' + res_list[1].to_s + ' cents only' : res + res_list[1].to_s  + ' cents only'
+        else
+          res = res != '' ? res + 'and ' + res_list[1].to_s + ' cent only' : res + res_list[1].to_s + ' cent only'
+        end
+      end
+     end
+    end
+  end
+
 
 puts sorted_squares([-4, -1, 0, 3, 10]).inspect
 puts move_zeros([1, 0, 2, 8, 0, 0, 7]).inspect
@@ -114,5 +154,6 @@ puts reverse_words(' hello world! ')
 puts highest_frequency_word('She says she got married')
 puts palindrome?('A man, a plan, a canal: Panama')
 
-
+b2 = Beverage.new('Mocha Latte',0.6)
+puts b2.formatted_price
 
