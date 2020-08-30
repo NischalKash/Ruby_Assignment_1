@@ -49,12 +49,14 @@ def reverse_words(str)
     word += vowel_str
     res << word
   end
-  res.join(' ')
+  res_str = res.join(' ')
+  res_str.downcase
 end
 
 def highest_frequency_word(s)
   words_list = s.gsub(Regexp.union(['!', '?', ',', '\'', ';', '.']), ' ').split.map(&:downcase)
   # puts words_list
+
   res = Hash.new{}
   words_list.each do |word|
     if res[word]
@@ -63,8 +65,16 @@ def highest_frequency_word(s)
       res[word] = 1
     end
   end
-  # puts res
-  res.max_by{ |k,v| v }[0]
+  max_freq = 1
+  max_freq_word = words_list[0]
+  res.each do |name, values|
+    if values > max_freq
+      max_freq_word = name
+      max_freq = values
+    end
+  end
+  max_freq_word
+  #res.max_by{ |k,v| v }[0]
 end
 
 # @param [Object] s
@@ -74,12 +84,10 @@ def palindrome?(s)
     return true
   end
 
-  str = s.gsub(/[^0-9a-z ]/i, '')
-  str = str.gsub(/\s+/, '').downcase!
-  # puts str
+  str = s.gsub(/[^0-9a-zA-Z ]/i, '')
+  str = str.gsub(/\s+/, "").downcase
   i = 0
-  j = str.to_s.length - 1
-
+  j = str.length - 1
   while i < j
     return false if str[i] != str[j]
     i += 1
@@ -102,7 +110,7 @@ class Beverage
 
   # @return [String]
   def formatted_price
-    #puts @price
+
      res = ''
      res_list = Array.new
      res_list = @price.to_s.split('.')
@@ -129,9 +137,9 @@ class Beverage
         if res_list[0] == 0
           res = ''
         elsif res_list[0] > 1
-          res = res_list[0] + ' dollars '
+          res = res_list[0].to_s  + ' dollars '
         else
-          res = res_list[0] + ' dollar '
+          res = res_list[0].to_s  + ' dollar '
         end
 
         if res_list[1] == 0
@@ -150,10 +158,10 @@ class Beverage
 puts sorted_squares([-4, -1, 0, 3, 10]).inspect
 puts move_zeros([1, 0, 2, 8, 0, 0, 7]).inspect
 puts group_anagrams(['elbow', 'cried', 'below', 'cider']).inspect
-puts reverse_words(' hello world! ')
-puts highest_frequency_word('She says she got married')
-puts palindrome?('A man, a plan, a canal: Panama')
+puts reverse_words('   hello world!   ')
+puts highest_frequency_word('How Are a!re you Doing?')
+puts palindrome?('popa')
 
-b2 = Beverage.new('Mocha Latte',0.6)
+b2 = Beverage.new('Mocha Latte',0)
 puts b2.formatted_price
 
