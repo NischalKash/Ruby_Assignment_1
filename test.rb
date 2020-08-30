@@ -49,13 +49,13 @@ def scores
 
   #Q7
   begin
-    b2 = Beverage.new("Mocha Latte", 10)
-  rescue
-    b2 = nil
+  b2 = Beverage.new('Mocha Latte',100)
+  rescue=>e
+    puts e.message
   end
 
   begin
-    b2.formatted_price=="10 dollars only" ? correct+=1 : wrong+=1
+    b2.formatted_price=="100 dollars only" ? correct+=1 : wrong+=1
   rescue
     wrong+=1
   end
