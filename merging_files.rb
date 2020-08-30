@@ -1,13 +1,14 @@
-def sorted(a)
+def sorted_squares(a)
     nums = []
     for i in 0..a.length-1
         nums[i] = a[i]*a[i]
     end
     return nums.sort
+
 end
 
 
-def move_zeroes(a)
+def move_zeros(a)
     nums = []
     count = 0
     j = 0
@@ -89,73 +90,62 @@ def find_highest(word)
 end
 
 
-def palindrome(s)
+def palin(s)
     if s.nil?
         return true
     end
     return s==s.reverse
 end
 
-
-a = [-4,-1,0,3,90]
-value = sorted a
-puts "#{value}"
-
-
-a = [9,12,0,0,0,0,11]
-value = move_zeroes a
-puts "#{value}"
-
-
-a = ['restful','fluster','hour','rouh','fluster']
-final_list = Hash.new
-i = 0
-while i<a.length
-final_list[a[i]] = [a[i]]
-    j = i+1
-    while j<=a.length-1
-        value = check_anagrams a[i],a[j]
-        if value == 1
-            final_list[a[i]].append(a[j])
-            a.delete_at(j)
-            j-=1
+def group_anagrams(a)
+    final_list = Hash.new
+    i = 0
+    while i<a.length
+    final_list[a[i]] = [a[i]]
+        j = i+1
+        while j<=a.length-1
+            value = check_anagrams a[i],a[j]
+            if value == 1
+                final_list[a[i]].append(a[j])
+                a.delete_at(j)
+                j-=1
+            end
+            j+=1
         end
-        j+=1
+        i+=1
     end
-    i+=1
+    value = []
+    final_list.each do | key, values |
+        value.append(values)
+    end
+    return value
 end
-value = []
-final_list.each do | key, values |
-    value.append(values)
+
+def reverse_words(string)
+    string = string.downcase
+    string = string.gsub(/\s+/m, ' ').strip.split(" ")
+    nums = []
+    for i in 0..string.length-1
+        a = reverse string[i]
+        nums[i] = a
+    end
+    nums = nums.reverse()
+    return nums.join(' ')
 end
-puts "#{value}"
 
-
-string = "Object          Oriented                      Design!!"
-string = string.downcase
-string = string.gsub(/\s+/m, ' ').strip.split(" ")
-nums = []
-for i in 0..string.length-1
-    a = reverse string[i]
-    nums[i] = a
+def highest_frequency_word(string)
+    string = string.downcase
+    string = string.gsub(/[^0-9A-Za-z ]/, '')
+    value = find_highest string
+    return value
 end
-nums = nums.reverse()
-puts "#{nums.join(' ')}"
 
-
-string = "How h!ow are you y!ou y!!!!--o-!!u doing"
-string = string.downcase
-string = string.gsub(/[^0-9A-Za-z ]/, '')
-value = find_highest string
-puts "#{value}"
-
-
-string = "!!!!"
-string = string.downcase
-string = string.gsub!(/[^0-9A-Za-z]/, '')
-puts "#{palindrome string}"
-
-
+def palindrome?(string)
+    string = string.downcase
+    string = string.gsub!(/[^0-9A-Za-z]/, '')
+    value = palin string
+    return value
+end
 
 class Beverage
   def initialize(name, price)
@@ -188,10 +178,8 @@ class Beverage
         end
       elsif res_list[0] == 0 and res_list.count == 2
         if res_list[1] > 1
-          #puts res_list[1]
           res = res_list[1].to_s + ' cents only'
         else
-          #puts res_list[1]
           res = res_list[1].to_s + ' cent only'
         end
       else
@@ -214,6 +202,3 @@ class Beverage
      end
     end
   end
-
-b2 = Beverage.new('Mocha Latte',0)
-puts b2.formatted_price
