@@ -6,6 +6,7 @@ def sorted(a)
     return nums.sort
 end
 
+
 def move_zeroes(a)
     nums = []
     count = 0
@@ -23,6 +24,7 @@ def move_zeroes(a)
     end
     return nums
 end
+
 
 def check_anagrams(a,b)
     check_a = Hash.new
@@ -48,6 +50,7 @@ def check_anagrams(a,b)
     end
 end
 
+
 def reverse(a)
     s1 = ""
     s2 = ""
@@ -62,6 +65,7 @@ def reverse(a)
     return s2+s1
 end
 
+
 def find_highest(word)
     words = word.split(' ')
     final_list = Hash.new
@@ -73,21 +77,36 @@ def find_highest(word)
             final_list[words[i]] = 1
         end
     end
-    final_list = final_list.sort_by {|_key, value| value}.reverse
-    return final_list[0]
+    puts "#{final_list}"
+    initial = ""
+    value_dict = 0
+    final_list.each do | key, values |
+        if values>value_dict
+            initial = key
+            value_dict = values
+        end
+    end
+    return initial
 end
 
+
 def palindrome(s)
+    if s.nil?
+        return true
+    end
     return s==s.reverse
 end
+
 
 a = [-4,-1,0,3,90]
 value = sorted a
 puts "#{value}"
 
+
 a = [9,12,0,0,0,0,11]
 value = move_zeroes a
 puts "#{value}"
+
 
 a = ['restful','fluster','hour','rouh','fluster']
 final_list = Hash.new
@@ -112,6 +131,7 @@ final_list.each do | key, values |
 end
 puts "#{value}"
 
+
 string = "Object          Oriented                      Design!!"
 string = string.downcase
 string = string.gsub(/\s+/m, ' ').strip.split(" ")
@@ -124,16 +144,18 @@ nums = nums.reverse()
 puts "#{nums.join(' ')}"
 
 
-string = "Bob hit a ball, the Hit BALL flew far after it was hit."
+string = "How are you doing?"
 string = string.downcase
 string = string.gsub!(/[^0-9A-Za-z ]/, '')
 value = find_highest string
-puts "#{value[0]}"
+puts "#{value}"
 
-string = "A man, a plan, a canal: Panama."
+
+string = "!!!!"
 string = string.downcase
 string = string.gsub!(/[^0-9A-Za-z]/, '')
 puts "#{palindrome string}"
+
 
 class Beverage
     def initialize(name,price)
@@ -190,6 +212,6 @@ class Beverage
     end
 end
 
-obj1 = Beverage.new("Nischal",10)
+obj1 = Beverage.new("Nischal",0.6)
 a = obj1.formatted_price()
 puts "#{a}"
