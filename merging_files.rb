@@ -143,10 +143,9 @@ nums = nums.reverse()
 puts "#{nums.join(' ')}"
 
 
-string = "How are you doing"
+string = "How h!ow are you y!ou y!!!!--o-!!u doing"
 string = string.downcase
 string = string.gsub(/[^0-9A-Za-z ]/, '')
-puts "#{string}"
 value = find_highest string
 puts "#{value}"
 
@@ -157,60 +156,64 @@ string = string.gsub!(/[^0-9A-Za-z]/, '')
 puts "#{palindrome string}"
 
 
+
 class Beverage
-    def initialize(name,price)
-        if name == ""
-            raise ArgumentError, 'Your name input is Nil'
-        end
-        if price == nil or price<0
-            raise ArgumentError, 'Your price input is Invalid'
-        end
-        @name = name
-        @price = price
-    end
-    def getname()
-        return @name
-    end
-    def getprice()
-        return @price
-    end
+  def initialize(name, price)
+    raise ArgumentError, 'Argument is nil or ""' unless name != nil && name != ''
+    raise ArgumentError, 'Argument is nil or <0' unless price != nil && price >= 0
 
-    def formatted_price()
-        if @price == 0
-            return "Free"
-        end
-        if @price.round == @price
-            if @price > 1
-                return "#{@price.to_i} Dollars Only"
-            else
-                 return "#{@price.to_i} Dollar Only"
-            end
-        end
-        b = @price.to_s.split('.')
-        if b[0].to_i==0
-            if b[1].to_i>1
-                return "#{b[1]} cents only"
-            else
-                return "#{b[1]} cent only"
-            end
-        end
-        if b[0].to_i==1
-            if b[1].to_i>1
-                return "1 dollar and #{b[1]} cents only"
-            else
-                return "1 dollar and #{b[1]} cent only"
-            end
-        end
-        if b[0].to_i>1
-            if b[1].to_i>1
-                return "#{b[0]} dollars and #{b[1]} cents only"
-            else
-                return "#{b[0]} dollars and #{b[1]} cent only"
-            end
-        end
-    end
-end
+    @name = name
+    @price = '%0.2f' % price
+  end
 
-obj1 = Beverage.new("Nischal",0.6)
-a = obj1.formatted_price()
-puts "#{a}"
+  attr_accessor :name
+  attr_accessor :price
+
+  # @return [String]
+  def formatted_price
+
+     res = ''
+     res_list = Array.new
+     res_list = @price.to_s.split('.')
+     res_list = res_list.map(&:to_i)
+
+     if (res_list[0] == 0 && res_list[1] == 0) || (res_list.count == 1 && res_list[0] == 0)
+       res = "Free"
+     else
+      if res_list.count == 1 ||  (res_list.count == 2 && res_list[1] == 0)
+        if res_list[0] > 1
+          res = res_list[0].to_s + ' dollars only'
+        else
+          res = res_list[0].to_s + ' dollar only'
+        end
+      elsif res_list[0] == 0 and res_list.count == 2
+        if res_list[1] > 1
+          #puts res_list[1]
+          res = res_list[1].to_s + ' cents only'
+        else
+          #puts res_list[1]
+          res = res_list[1].to_s + ' cent only'
+        end
+      else
+        if res_list[0] == 0
+          res = ''
+        elsif res_list[0] > 1
+          res = res_list[0].to_s  + ' dollars '
+        else
+          res = res_list[0].to_s  + ' dollar '
+        end
+
+        if res_list[1] == 0
+          res = res
+        elsif res_list[1] > 1
+          res = res != '' ? res + 'and ' + res_list[1].to_s + ' cents only' : res + res_list[1].to_s  + ' cents only'
+        else
+          res = res != '' ? res + 'and ' + res_list[1].to_s + ' cent only' : res + res_list[1].to_s + ' cent only'
+        end
+      end
+     end
+    end
+  end
+
+b2 = Beverage.new('Mocha Latte',0)
+puts b2.formatted_price
